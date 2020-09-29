@@ -1,4 +1,4 @@
-#  Lotus Project
+# Lotus Project
 
 Another Lotus Project  
 **Join Lotus Development Team** on [Discord](https://discord.gg/kdfxXx)  
