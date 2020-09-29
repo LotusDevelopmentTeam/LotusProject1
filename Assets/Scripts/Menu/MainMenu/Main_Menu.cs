@@ -80,7 +80,6 @@ public class Main_Menu : MonoBehaviour
 
     void DpkgPrefs(string prefs)
     {
-        Debug.Log(prefs);
         //Ej. Jake's Server,192.168.1.1,8080|Public Server 1,192.168.1.104,40|Dead Server,192.168.1.32,9529
         string[] split_prefs = prefs.Split('|');
         servers.Clear();
@@ -114,15 +113,5 @@ public class Main_Menu : MonoBehaviour
                 ServerButtons[i].gameObject.SetActive(false);
             }
         }
-    }
-
-    //TEMPORAL
-    public void ClearPrefs()
-    {
-        PlayerPrefs.SetString("Servers", "");
-        servers.Clear();
-        ips.Clear();
-        ports.Clear();
-        RefreshServers();
     }
 }

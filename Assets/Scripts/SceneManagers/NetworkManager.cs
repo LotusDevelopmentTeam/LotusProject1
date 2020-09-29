@@ -67,7 +67,7 @@ public class NetworkManager : MonoBehaviour
     public void SinglePlayer()
     {
         OnlineMode = false;
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("MainScene");
     }
 
     public void MultiPlayer()
