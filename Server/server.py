@@ -37,16 +37,26 @@ def main():
 
 
 def manage_player(player):
-    # First packet sent by client is his login credentials
-    packet = player.get_packet()
-    
-    if not packet.is_valid():
-        disconnect_player(player)
-        return
-    
-    username, password = (packet.content['USERNAME'], packet.content['PASSWORD'])
-    
-    #TODO Verify login credentials with database
+    # First packet sent by client is USERNAME, PASSWORD, MODE
+    while True:
+        try:
+            packet = player.get_packet()
+        except socket.timeout:
+            return
+
+        if not packet.is_valid():
+            packet = Packet("TYPE=" + LOGIN_SIGNUP_ERROR_TYPE + "MSG=" + "Unknown error. Please try again;")
+            player.send_packet(packet)
+            continue
+            
+            username, password = (packet.content['USERNAME'], packet.content['PASSWORD'])
+        
+        if packet.content['MODE'] == SIGNUP_MODE:
+            #TOOD Register on BD
+            
+        else:
+            #Check Login on BD
+
 
     # Login correct!
     player.username = username

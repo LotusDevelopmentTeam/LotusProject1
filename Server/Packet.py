@@ -1,12 +1,14 @@
 # Packet Types
 # Packets with number < 0 doesn't require propagation to other players
-REGISTER_TYPE = -2
-LOGIN_TYPE = -1
+SIGNUP_SUCCESSFULY_TYPE = -4;
+LOGIN_SIGNUP_ERROR_TYPE = -3;
+LOGIN_SIGNUP_TYPE = -1;
+LOGIN_SUCCESSFULY_TYPE = 1;
 NOT_VALID_TYPE = 0
-LOGIN_SUCCESSFULY = 1
+LOGIN_SUCCESSFULY_TYPE = 1
 DISCONNECT_TYPE = 3
 PLAYER_MOVEMENT_TYPE = 4
-PLAYER_RUN_TYPE = 5
+PLAYER_ANIMATION_TYPE = 5
 PLAYER_DROP_ITEM_TYPE = 6
 PLAYER_GRAB_ITEM_TYPE = 7
 PLAYER_BUILD_TYPE = 8
@@ -18,6 +20,10 @@ PLAYER_CHAT_TYPE = 11
 END_MSG_CHAR = ';'
 DELIMITER_CHAR = ','
 KEY_VALUE_CHAR = '='
+
+#Modes
+SIGNUP_MODE = "s";
+LOGIN_MODE = "l";
 
 ''' All (except the first) packets starts with TYPE=(MSG_TYPE),ID=(USER_ID)
     The first only starts with TYPE and not with ID'''
@@ -34,6 +40,8 @@ class Packet():
         return bool(self.type)
 
     def _get_type(self):
+        if ';' not in self.msg:
+            return NOT_VALID_TYPE
         return self.content.get('TYPE', NOT_VALID_TYPE)
 
     def _get_content(self):

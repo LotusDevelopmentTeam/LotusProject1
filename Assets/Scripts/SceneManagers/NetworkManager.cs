@@ -1,24 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Net.Sockets;
-using System.Net;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using System.Text;
-using System;
-using System.Threading;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using Assets.Scripts.SceneManagers;
+using System;
 
 public class NetworkManager : MonoBehaviour
 {
-    public List<GameObject> Items = new List<GameObject>();
+    //Server object setup
+    public static string server_address;
+    public static int server_port;
+    public Packet packet;
 
-    static public TcpClient client;
-    static public int server_port = 9529;
-    static public string server_address;
-    static public string Username;
-    static public string Password;
-    static public NetworkStream dataStream;
+    // Manager Scipts setup
+    #region Managers Set-Up
+    LoginManager loginManager = new LoginManager();
+    PlayersConnectionsManager pcm = new PlayersConnectionsManager();
+    SceneChangeManager scm = new SceneChangeManager();
+    
+
+    #endregion
+
+
+    #region Divide in other scripts
+    public List<GameObject> Items = new List<GameObject>();
     static public bool OnlineMode;
 
     public bool Accepted;
@@ -31,127 +35,100 @@ public class NetworkManager : MonoBehaviour
     Transform Player;
 
     Vector2 SpawnPoint;
+    #endregion
 
-    [SerializeField]
-    static public int MyIndex;
 
     void Start()
     {
-        Accepted = false;
-        MyIndex = -1;
-        if (server_address != null) { Connect(server_address); }
-
-        if (SceneManager.GetActiveScene().name != "Menu")
-        {
-            if (!OnlineMode)
-            {
-                GameObject Spawn;
-                Spawn = GameObject.Find("SpawnPoint");
-                SpawnPoint = new Vector2(Spawn.transform.position.x, Spawn.transform.position.y);
-
-                Player = Instantiate(HostPlayer, SpawnPoint, Quaternion.identity).transform;
-            }
-        }
+        Server.Connect(server_address, server_port);
 
     }
 
     void Update()
     {
-        if (OnlineMode)
+        packet = Server.GetPacket();
+        #region Packet management
+        if (packet.Type != Packet.NOT_VALID_TYPE)
         {
-            ReceivePackets();
-        }
-
-    }
-
-    public void SinglePlayer()
-    {
-        OnlineMode = false;
-        SceneManager.LoadScene("MainScene");
-    }
-
-    public void MultiPlayer()
-    {
-        OnlineMode = true;
-        GameObject TheInput;
-        TheInput = GameObject.Find("Ip_Input").transform.Find("Text").gameObject;
-        server_address = TheInput.GetComponent<Text>().text;
-        TheInput = GameObject.Find("Username").transform.Find("Text").gameObject;
-        Username = TheInput.GetComponent<Text>().text;
-        TheInput = GameObject.Find("Password").transform.Find("Text").gameObject;
-        Password = TheInput.GetComponent<Text>().text;
-        SceneManager.LoadScene("SampleScene");
-
-    }
-
-    public void Connect(string address)
-    {
-        try
-        {
-            client = new TcpClient();
-            client.NoDelay = true;
-            client.Connect(address, server_port);
-            dataStream = client.GetStream();
-            print("Connected");
-            SendPacket(Username + "*" + Password);
-            print("Username sent.");
-        }
-        catch
-        {
-            print("Trying To Connect");
-        }
-    }
-
-    public void Disconnect()
-    {
-        SendPacket("Disconnect:" + "pos" + Math.Round((double)Player.position.x, 1).ToString() + "a" + Math.Round((double)Player.position.y, 1).ToString());
-        client.Close();
-        client.Dispose();
-        Application.Quit();
-    }
-
-    public void SendPacket(string msg)
-    {
-        string pack = ("[" + Username + ":" + msg + "]");
-        try
-        {
-            char[] data = pack.ToCharArray();
-            byte[] buffer = new byte[data.Length];
-            for (int i = 0; i < data.Length; i++)
+            //Call corresponding script based on packet Type
+            if (CrossSceneInfo.InGame)
             {
-                buffer[i] = (byte)data[i];
+                if (CrossSceneInfo.OnlineMode)
+                {
+                    ManageInGamePacket(packet);
+                }
+                else
+                {
+                    // Save Offline stuff
+                }
             }
-            dataStream.Write(buffer, 0, buffer.Length);
-            dataStream.Flush();
-        }
-        catch
-        {
-            print("Can't Send: " + pack);
-        }
-    }
-
-    public bool Mode { get { return OnlineMode; } }
-
-    public void ReceivePackets()
-    {
-        if (dataStream.DataAvailable == true)
-        {
-            byte[] buffer = new byte[1024];
-            dataStream.Read(buffer, 0, buffer.Length);
-            temp = Encoding.ASCII.GetString(buffer);
-            temp = temp.Replace("[", String.Empty);
-            string[] temps = temp.Split(']');
-
-            for (int i = 0; i < temps.Length-1; i++)
+            else
             {
-                temps[i].Replace("[", String.Empty);
-                AnalyzePackets(temps[i]);
+                ManageMenuPacket(packet);
             }
 
-            temp = String.Empty;
-            Array.Clear(temps, 0, temps.Length);
+        }
+        #endregion
+
+
+    }
+
+    private void ManageInGamePacket(Packet packet)
+    {
+        switch (packet.Type)
+        {
+            case Packet.LOGIN_SUCCESSFULY_TYPE:
+                pcm.Response(packet);
+                break;
+
+            case Packet.DISCONNECT_TYPE:
+                pcm.Response(packet);
+                break;
+
+            case Packet.PLAYER_SWITCH_SCENE:
+                scm.Response(packet);
+                break;
+                
+            case Packet.PLAYER_MOVEMENT_TYPE:
+                //TODO
+                break;
+
+            case Packet.PLAYER_ANIMATION_TYPE:
+                //TODO
+                break;
+
+            default:
+                break;
         }
     }
+
+    private void ManageMenuPacket(Packet packet)
+    {
+        switch (packet.Type)
+        {
+            case Packet.LOGIN_SIGNUP_ERROR_TYPE:
+                loginManager.Response(packet);
+                break;
+
+            case Packet.LOGIN_SUCCESSFULY_TYPE:
+                loginManager.Response(packet);
+                break;
+
+            case Packet.SIGNUP_SUCCESSFULY_TYPE:
+                loginManager.Response(packet);
+                break;
+
+            default:
+                break;
+        }
+
+    }
+
+    public static void SendPacket(Packet packet)
+    {
+        Server.SendPacket(packet);
+    }
+
 
     void AnalyzePackets(string temp)
     {
@@ -216,8 +193,6 @@ public class NetworkManager : MonoBehaviour
                 Accepted = true;
             }
         }
-        
+
     }
 }
-
-

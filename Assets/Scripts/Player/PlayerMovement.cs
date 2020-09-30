@@ -2,53 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using TMPro;
-using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Player movement")]
     public float moveSpeed;
     public float WalkSpeed = 5;
     public float RunSpeed = 7.5f;
 
-    [Header("Player sprinting")]
-    public bool Sprinting;
-    public Image sprintingButtonBG;
-
-    [Header("Player stats")]
     public float Stamina;
     Transform StaminaBar;
     public float regenCount;
+
+    float PacketCooldown;
     public float CooldownBaseValue = 0.02f;
 
-    [Header("Player audio")]
+    public Transform movePoint;
     public List<AudioSource> FX = new List<AudioSource>();
 
-    //Oulsen 25-09-2020
-    [Header("Joystick settings")]
-    public Joystick joystickControls;
-    public PlayerAnimationControl playerAnimationController;
-    public float joyStickDeadZone;
+    public LayerMask whatStopsMovement;
 
-    //Debug joystick stuff
-    [Header("Joystick debugger")]
-    public bool debugJoystick;
-    public GameObject joystickDebugger;
-    public TextMeshProUGUI debugJoystickVertical;
-    public TextMeshProUGUI debugJoystickHorizontal;
+    NetworkManager NetManager;
 
-    [Header("Network")]
+    public bool Sprinting;
+
+    public AxisControl AxisManager;
+
     public Vector2 OldPos;
 
-    //Private variables
-    private float PacketCooldown;
-    NetworkManager NetManager;
     // Start is called before the first frame update
     void Start()
     {
         NetManager = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
+        AxisManager = GameObject.Find("AxisManager").GetComponent<AxisControl>();
         StaminaBar = GameObject.Find("StaminaBar").transform.Find("Bar").transform;
+        movePoint = transform.Find("PlayerMovePoint");
         for (int i = 0; i < transform.Find("PlayerFX").childCount; i++)
         {
             FX.Add(transform.Find("PlayerFX").GetChild(i).GetComponent<AudioSource>());
@@ -56,21 +43,21 @@ public class PlayerMovement : MonoBehaviour
         PacketCooldown = 0;
         Stamina = 10;
         moveSpeed = WalkSpeed;
+        movePoint.parent = null;
         Sprinting = false;
         OldPos.x = transform.position.x;
         OldPos.y = transform.position.y;
-
-        joystickControls.DeadZone = joyStickDeadZone;
     }
 
     // Update is called once per frame
     void Update()
     {
         SendPosition();
+        transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
+        regenCount -= Time.deltaTime;
         SprintMechanic();
-        PlayerControls();
-
-        if(joystickControls.Horizontal != 0 || joystickControls.Vertical != 0)
+        BasicMovement();
+        if(AxisManager.HorizontalAxis != 0 || AxisManager.VerticalAxis != 0)
         {
             PlaySoundFX();
         }
@@ -85,52 +72,22 @@ public class PlayerMovement : MonoBehaviour
 
     public void EnableSprint()
     {
-        if (Sprinting)
-        {
-            Sprinting = false;
-            moveSpeed = WalkSpeed;
-            sprintingButtonBG.color = Color.white;
-        }
-        else if (!Sprinting)
-        {
-            Sprinting = true;
-            NetManager.SendPacket("SprintingSound");
-            sprintingButtonBG.color = Color.yellow;
-        }
+        Sprinting = true;
+        NetManager.SendPacket("SprintingSound");
     }
 
-    private void PlayerControls()
+    void BasicMovement()
     {
-        //Note Oulsen: Use the joyStickDeadZone float in the inspector to set when the joystick will respond (value between 0.1 and 1). 
-        //Example: 0.5f will enable movement when you move the joystick more then halfway
-
-        float checkInput = joystickControls.Vertical + joystickControls.Horizontal;
-
-        if (checkInput > 0 || checkInput < 0)
+        if (Vector2.Distance(transform.position, movePoint.position) <= 0.1f)
         {
-            transform.position = new Vector2
-                (
-                transform.position.x + joystickControls.Horizontal * moveSpeed * Time.deltaTime,
-                transform.position.y + joystickControls.Vertical * moveSpeed * Time.deltaTime
-                );
-        }
-
-        //Debug Joystick values
-        if (debugJoystick)
-        {
-            joystickDebugger.SetActive(true);
-            debugJoystickHorizontal.text = "Horizontal value: " + joystickControls.Horizontal.ToString("#.####");
-            debugJoystickVertical.text = "Vertical value: " + joystickControls.Vertical.ToString("#.####");
-        }
-        else if (!debugJoystick)
-        {
-            joystickDebugger.SetActive(false);
+            if (!Physics2D.OverlapCircle(movePoint.position + new Vector3(AxisManager.HorizontalAxis, AxisManager.VerticalAxis, 0f), 0.1f, whatStopsMovement))
+            {
+                movePoint.position += new Vector3(AxisManager.HorizontalAxis, AxisManager.VerticalAxis, 0f);
+            }
         }
     }
-
     void SprintMechanic()
     {
-        regenCount -= Time.deltaTime;
         StaminaBar.localScale = new Vector3(Stamina / 10, 1);
 
         if (Sprinting == true && Stamina > 0)

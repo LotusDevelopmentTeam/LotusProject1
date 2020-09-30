@@ -11,8 +11,6 @@ public class PlayerAnimationControl : MonoBehaviour
     public NetworkManager NetManager;
     public AxisControl AxisManager;
 
-    public Joystick joystickControls;
-
     public string WhatAnim;
     public string OldAnim;
 
@@ -29,7 +27,46 @@ public class PlayerAnimationControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        SwitchAnimationJoystick();
+        if (AxisManager.VerticalAxis == 1)
+        {
+            anim.SetBool("MovingUp", true);
+            WhatAnim = ("Up");
+            anim.SetBool("MovingLeft", false);
+            anim.SetBool("MovingDown", false);
+            anim.SetBool("MovingRight", false);
+        }
+        else if (AxisManager.HorizontalAxis == -1)
+        {
+            anim.SetBool("MovingLeft", true);
+            WhatAnim = ("Left");
+            anim.SetBool("MovingUp", false);
+            anim.SetBool("MovingDown", false);
+            anim.SetBool("MovingRight", false);
+        }
+        else if (AxisManager.VerticalAxis == -1)
+        {
+            anim.SetBool("MovingDown", true);
+            WhatAnim = ("Down");
+            anim.SetBool("MovingLeft", false);
+            anim.SetBool("MovingUp", false);
+            anim.SetBool("MovingRight", false);
+        }
+        else if (AxisManager.HorizontalAxis == 1)
+        {
+            anim.SetBool("MovingRight", true);
+            WhatAnim = ("Right");
+            anim.SetBool("MovingLeft", false);
+            anim.SetBool("MovingDown", false);
+            anim.SetBool("MovingUp", false);
+        }
+        else
+        {
+            anim.SetBool("MovingRight", false);
+            anim.SetBool("MovingLeft", false);
+            anim.SetBool("MovingDown", false);
+            anim.SetBool("MovingUp", false);
+            WhatAnim = "Idle";
+        }
         //.......
 
         PacketCooldown -= Time.deltaTime;
@@ -56,74 +93,6 @@ public class PlayerAnimationControl : MonoBehaviour
         if (NetManager.Mode)
         {
             NetManager.SendPacket("anim" + Direction);
-        }
-    }
-
-    private void SwitchAnimationJoystick()
-    {
-        if (joystickControls.Vertical > joystickControls.DeadZone)
-        {
-            SwitchAnimation("Up");
-        }
-        else if (joystickControls.Vertical < -joystickControls.DeadZone)
-        {
-            SwitchAnimation("Down");
-        }
-        else if (joystickControls.Horizontal > joystickControls.DeadZone)
-        {
-            SwitchAnimation("Right");
-        }
-        else if (joystickControls.Horizontal < -joystickControls.DeadZone)
-        {
-            SwitchAnimation("Left");
-        }
-        else
-        {
-            SwitchAnimation("Idle");
-        }
-    }
-
-    public void SwitchAnimation(string animation)
-    {
-        switch (animation)
-        {
-            case "Idle":
-                anim.SetBool("MovingRight", false);
-                anim.SetBool("MovingLeft", false);
-                anim.SetBool("MovingDown", false);
-                anim.SetBool("MovingUp", false);
-                WhatAnim = "Idle";
-                break;
-            case "Up":
-                anim.SetBool("MovingUp", true);
-                WhatAnim = ("Up");
-                anim.SetBool("MovingLeft", false);
-                anim.SetBool("MovingDown", false);
-                anim.SetBool("MovingRight", false);
-                break;
-            case "Down":
-                anim.SetBool("MovingDown", true);
-                WhatAnim = ("Down");
-                anim.SetBool("MovingLeft", false);
-                anim.SetBool("MovingUp", false);
-                anim.SetBool("MovingRight", false);
-                break;
-
-            case "Right":
-                anim.SetBool("MovingRight", true);
-                WhatAnim = ("Right");
-                anim.SetBool("MovingLeft", false);
-                anim.SetBool("MovingDown", false);
-                anim.SetBool("MovingUp", false);
-                break;
-
-            case "Left":
-                anim.SetBool("MovingLeft", true);
-                WhatAnim = ("Left");
-                anim.SetBool("MovingUp", false);
-                anim.SetBool("MovingDown", false);
-                anim.SetBool("MovingRight", false);
-                break;
         }
     }
 }
