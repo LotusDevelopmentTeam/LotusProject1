@@ -8,9 +8,9 @@ using UnityEngine.UI;
 
 public class LoginManager : ManagerBase
 {
-    public Button login_signup_button;
-    public static Text result_txt;
-
+    public Text result_txt;
+    public Button send_button;
+    public Button cancel_button;
     string username;
     string password;
 
@@ -48,20 +48,20 @@ public class LoginManager : ManagerBase
             result_txt.text = packet.Content["MSG"];
         }
 
-        login_signup_button.enabled = true;
+        send_button.enabled = true;
     }
 
 
     public void LogIn(string username, string password)
     {
-        login_signup_button.enabled = false;
+        send_button.enabled = false;
         Packet packet = new Packet(username, password, Packet.LOGIN_MODE);
         Send(packet);
     }
 
     public void SignUp(string username, string password)
     {
-        login_signup_button.enabled = false;
+        send_button.enabled = false;
         Packet packet = new Packet(username, password, Packet.SIGNUP_MODE);
         Send(packet);
 
