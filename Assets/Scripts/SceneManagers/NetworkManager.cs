@@ -13,29 +13,13 @@ public class NetworkManager : MonoBehaviour
 
     // Manager Scipts setup
     #region Managers Set-Up
-    LoginManager loginManager = new LoginManager();
-    PlayersConnectionsManager pcm = new PlayersConnectionsManager();
-    SceneChangeManager scm = new SceneChangeManager();
+    public LoginManager loginManager;
+    public PlayersConnectionsManager pcm;
+    public SceneChangeManager scm;
     
 
     #endregion
 
-
-    #region Divide in other scripts
-    public List<GameObject> Items = new List<GameObject>();
-    static public bool OnlineMode;
-
-    public bool Accepted;
-    public string temp = "";
-
-    public GameObject HostPlayer;
-    public GameObject ClientPlayer;
-    GameObject EnemyPlayer;
-
-    Transform Player;
-
-    Vector2 SpawnPoint;
-    #endregion
 
 
     void Start()
@@ -48,6 +32,7 @@ public class NetworkManager : MonoBehaviour
     {
 
         packet = Server.GetPacket();
+
         #region Packet management
         if (packet.Type != Packet.NOT_VALID_TYPE)
         {

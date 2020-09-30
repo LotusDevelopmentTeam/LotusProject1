@@ -1,9 +1,19 @@
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Assets.Scripts.SceneManagers;
+=======
+﻿using UnityEngine;
+using TMPro;
+>>>>>>> Stashed changes
+=======
+﻿using UnityEngine;
+using TMPro;
+>>>>>>> Stashed changes
 
 public class ConnectServer : MonoBehaviour
 {
@@ -18,6 +28,10 @@ public class ConnectServer : MonoBehaviour
     // Update is called once per frame
     public void Connect()
     {
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
         string username = GameObject.Find("UsernameInput").GetComponent<TextMeshProUGUI>().text;
         string password = GameObject.Find("PasswordInput").GetComponent<TextMeshProUGUI>().text;
 
