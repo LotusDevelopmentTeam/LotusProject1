@@ -129,7 +129,7 @@ public class NetworkManager : MonoBehaviour
         Server.SendPacket(packet);
     }
 
-
+    /*
     void AnalyzePackets(string temp)
     {
         print(temp);
@@ -195,4 +195,5 @@ public class NetworkManager : MonoBehaviour
         }
 
     }
+    */
 }

@@ -90,9 +90,6 @@ public class PlayerAnimationControl : MonoBehaviour
     }
     public void SendAnimation(string Direction)
     {
-        if (NetManager.Mode)
-        {
-            NetManager.SendPacket("anim" + Direction);
-        }
+        
     }
 }

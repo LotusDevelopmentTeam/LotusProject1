@@ -73,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
     public void EnableSprint()
     {
         Sprinting = true;
-        NetManager.SendPacket("SprintingSound");
+        //NetManager.SendPacket("SprintingSound");
     }
 
     void BasicMovement()
@@ -100,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Sprinting = false;
             moveSpeed = WalkSpeed;
-            NetManager.SendPacket("WalkingSound");
+            //NetManager.SendPacket("WalkingSound");
         }
         if (!Sprinting)
         {
@@ -112,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void SendPosition()
     {
-        if (NetManager.Mode)
+        if (/*NetManager.Mode*/true)
         {
             PacketCooldown -= Time.deltaTime;
             if (OldPos.x != transform.position.x || OldPos.y != transform.position.y)
@@ -121,7 +121,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     try
                     {
-                        NetManager.SendPacket("pos" + Math.Round((double)transform.position.x, 1).ToString() + "a" + Math.Round((double)transform.position.y, 1).ToString());
+                        //NetManager.SendPacket("pos" + Math.Round((double)transform.position.x, 1).ToString() + "a" + Math.Round((double)transform.position.y, 1).ToString());
                         PacketCooldown = CooldownBaseValue;
                     }
                     catch
@@ -160,6 +160,6 @@ public class PlayerMovement : MonoBehaviour
     }
     public void SendDisconnect()
     {
-        NetManager.Disconnect();
+        //NetManager.Disconnect();
     }
 }

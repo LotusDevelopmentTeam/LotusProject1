@@ -108,7 +108,7 @@ public class Construction : MonoBehaviour
         if (buildCooldown <= 0)
         {
             if (BlockSelectedResourceId == 0)
-            {
+            {/*
                 if (Inventory.Items[BlockSelectedResourceId] > 0)
                 {
                     if (!Physics2D.OverlapCircle(target, 0.4f, whatStopsMovement))
@@ -119,6 +119,7 @@ public class Construction : MonoBehaviour
                         buildCooldown = 1f;
                     }
                 }
+                */
 
             }
         }    

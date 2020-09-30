@@ -19,6 +19,8 @@ public static class CrossSceneInfo
             inGame = value;
         }
     }
+    public static string IpAddress;
+    public static int ServerPort;
 
     public static string MyId { get; set; }
     public static Dictionary<string, Player> PlayerList { get; set; }

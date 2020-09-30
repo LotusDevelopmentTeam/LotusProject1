@@ -157,7 +157,7 @@ namespace Assets.Scripts.SceneManagers
         private string _pos_to_text(Vector2 position)
         {
             CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
-            string str_pos = ",POS_X=" + position.X.ToString("F5", culture) + ",POS_Y=" + position.Y.ToString("F5", culture);
+            string str_pos = ",POS_X=" + position.x.ToString("F5", culture) + ",POS_Y=" + position.y.ToString("F5", culture);
             return str_pos;
         }
 
@@ -169,4 +169,5 @@ namespace Assets.Scripts.SceneManagers
         }
         #endregion
     }
+
 }

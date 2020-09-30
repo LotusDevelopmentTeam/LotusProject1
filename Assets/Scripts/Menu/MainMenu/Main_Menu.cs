@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Assets.Scripts.SceneManagers;
+using UnityEngine.SceneManagement;
 
 public class Main_Menu : MonoBehaviour
 {
@@ -25,7 +27,9 @@ public class Main_Menu : MonoBehaviour
 
     public void Campaign()
     {
-
+        CrossSceneInfo.OnlineMode = false;
+        CrossSceneInfo.InGame = true;
+        SceneManager.LoadScene("MainScene");
     }
     public void Online()
     {

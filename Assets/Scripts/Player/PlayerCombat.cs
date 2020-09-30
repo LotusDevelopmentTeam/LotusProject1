@@ -62,9 +62,9 @@ public class PlayerCombat : MonoBehaviour
         if (SelectedAbility == 0 && FireballCooldown >= 2)
         {
             GameObject projectile = (GameObject)Instantiate(bullet, myPos, rotation);
-            if (NetManager.Mode)
+            if (/*NetManager.Mode*/true)
             {
-                NetManager.SendPacket("abi"+ SelectedAbility.ToString() + "r" + Math.Round(Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg, 2).ToString());
+                //NetManager.SendPacket("abi"+ SelectedAbility.ToString() + "r" + Math.Round(Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg, 2).ToString());
             }
             FireballCooldown = 0f;
         }
@@ -79,7 +79,7 @@ public class PlayerCombat : MonoBehaviour
             }
             else
             {
-                if (!InvSystem.ShowingInv)
+                if (/*!InvSystem.ShowingInv*/true)
                 {
                     Vector2 target = Camera.main.ScreenToWorldPoint(new Vector2(Input.GetTouch(i).position.x, Screen.height - Input.GetTouch(i).position.y));
                     Vector2 myPos = new Vector2(transform.position.x, transform.position.y);
@@ -115,9 +115,9 @@ public class PlayerCombat : MonoBehaviour
     public void SelectShield()
     {
         GameObject barrier = (GameObject)Instantiate(shield, transform);
-        if (NetManager.Mode)
+        if (/*NetManager.Mode*/true)
         {
-            NetManager.SendPacket("abi" + "1");
+            //NetManager.SendPacket("abi" + "1");
         }
         ShieldCooldown = 0;
     }

@@ -60,7 +60,7 @@ public static class Server
             return packet;
         }
         Debug.Log("Stream.CanRead = FALSE");
-        return new Packet();
+        return new Packet("");
     }
 
     public static void SendPacket(Packet packet)
@@ -80,7 +80,7 @@ public static class Server
 
     public static void Disconnect()
     {
-        Packet packet = new Packet();
+        Packet packet = new Packet("");
         //TODO SEND DISCONNECT PACKET 
         client.Close();
         client.Dispose(); ;

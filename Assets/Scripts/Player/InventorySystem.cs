@@ -6,6 +6,7 @@ using System;
 
 public class InventorySystem : MonoBehaviour
 {
+    /*
     public List<int> Items;
     public List<Transform> ItemHolders;
     public List<Sprite> Sprites = new List<Sprite>();
@@ -192,4 +193,5 @@ public class InventorySystem : MonoBehaviour
             StoreItem(itemId, GameObject.Find(itemId.ToString()).transform.GetComponent<SpriteRenderer>().sprite);
         }
     }
+    */
 }
