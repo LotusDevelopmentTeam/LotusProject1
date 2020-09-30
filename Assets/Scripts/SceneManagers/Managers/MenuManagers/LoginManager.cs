@@ -10,8 +10,6 @@ public class LoginManager : ManagerBase
 {
     public Button login_signup_button;
     public static Text result_txt;
-    public InputField username_field;
-    public InputField password_field;
 
     string username;
     string password;
@@ -54,12 +52,9 @@ public class LoginManager : ManagerBase
     }
 
 
-    public void LogIn()
+    public void LogIn(string username, string password)
     {
         login_signup_button.enabled = false;
-        username = username_field.text;
-        password = password_field.text;
-
         Packet packet = new Packet(username, password, Packet.LOGIN_MODE);
         Send(packet);
     }
@@ -67,8 +62,6 @@ public class LoginManager : ManagerBase
     public void SignUp()
     {
         login_signup_button.enabled = false;
-        username = username_field.text;
-        password = password_field.text;
         Packet packet = new Packet(username, password, Packet.SIGNUP_MODE);
         Send(packet);
 

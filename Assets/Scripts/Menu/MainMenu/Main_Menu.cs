@@ -12,7 +12,8 @@ public class Main_Menu : MonoBehaviour
     GameObject OnlineScreen;
 
     public GameObject ServerAddPrefab;
-    public GameObject AddWindow;
+    public GameObject LoginPrefab;
+    public GameObject Window;
 
     public List<string> servers;
     public List<string> ips;
@@ -55,9 +56,15 @@ public class Main_Menu : MonoBehaviour
         OnlineScreen.SetActive(false);
         SettingsScreen.SetActive(false);
     }
+
     public void AddServer()
     {
-        AddWindow = Instantiate(ServerAddPrefab, GameObject.Find("CenterOfScreen").transform);
+        Window = Instantiate(ServerAddPrefab, GameObject.Find("CenterOfScreen").transform);
+    }
+
+    public void Login()
+    {
+        Window = Instantiate(LoginPrefab, GameObject.Find("CenterOfScreen").transform);
     }
 
     void init()
