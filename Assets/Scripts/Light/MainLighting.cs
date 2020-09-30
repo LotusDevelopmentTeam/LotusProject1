@@ -51,7 +51,7 @@ public class MainLighting : MonoBehaviour
         Debug.Log(timer + " " + globalLight.intensity);
 
         //Below is for testing, this needs to be a separate script on every building light using information from this script to turn the lights on when its nighttime and turn them off during the day.
-        if (globalLight.intensity < 0.5f)
+        if (globalLight.intensity < 0.7f)
         {
             testLight.gameObject.SetActive(true);
         }
