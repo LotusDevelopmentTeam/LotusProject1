@@ -11,9 +11,9 @@ namespace Assets.Scripts.SceneManagers
      * This client will never receive a packet without ID.
      * 
      * FORMATS:
-     *      SIGN-UP / LOGIN FORMAT:                 Packet(username, password, mode='s'/'l' )
-     *      SIGN-UP / LOGIN ERROR:                  Packet(msg, mode='s'/'l')
-     *      SIGN-UP_SUCCESSFULY FORMAT:             Packet(id, username)
+     *      REGISTER / LOGIN FORMAT:                Packet(username, password, mode='r'/'l' )
+     *      REGISTER / LOGIN ERROR:                 Packet(msg, mode='s'/'l')
+     *      REGISTER_SUCCESSFULY FORMAT:            Packet(id, username)
      *      LOGIN_SUCCESFULY FORMAT:                Packet(id, username, scene, pos_x, pos_y)
      *      DISCONNECT FORMAT:                      Packet(id)
      *      PLAYER_SWITCH_SCENE FORMAT:             Packet(id, scene, pos_x, pos_y)
@@ -33,7 +33,7 @@ namespace Assets.Scripts.SceneManagers
         public const int NOT_VALID_TYPE = 0;
 
         #region Modes
-        public const string SIGNUP_MODE = "s";
+        public const string REGISTER_MODE = "s";
         public const string LOGIN_MODE = "l";
         public const string DISCONNECT_MODE = "d";
         #endregion
@@ -41,7 +41,7 @@ namespace Assets.Scripts.SceneManagers
         #region Sign-Up / Login Packets
 
 
-        public const int SIGNUP_SUCCESSFULY_TYPE = -4;
+        public const int REGISTER_SUCCESSFULY_TYPE = -4;
         public const int LOGIN_SIGNUP_ERROR_TYPE = -3;
         public const int LOGIN_SIGNUP_TYPE = -1;
         public const int LOGIN_SUCCESSFULY_TYPE = 1;
@@ -90,13 +90,13 @@ namespace Assets.Scripts.SceneManagers
 
 
         /// <summary>
-        /// Sign-Up / Login packet.
+        /// Register / Login packet.
         /// <para>mode = LOGIN_MODE or SIGNUP_MODE</para>
         /// </summary>
         public Packet(string username, string password, string mode = LOGIN_MODE)
         {
             Type = LOGIN_SIGNUP_TYPE;
-            Msg = "TYPE=" + Type.ToString() + ",USERNAME=" + username + ",PASSWORD=" + password + "MODE=" + LOGIN_MODE + ";";
+            Msg = "TYPE=" + Type.ToString() + ",USERNAME=" + username + ",PASSWORD=" + password + ",MODE=" + mode + ";";
             Content = _get_content();
         }
 

@@ -13,6 +13,8 @@ public class Main_Menu : MonoBehaviour
 
     public GameObject ServerAddPrefab;
     public GameObject LoginPrefab;
+    public GameObject LoginRegisterPrefab;
+    public GameObject RegisterPrefab;
     public GameObject Window;
 
     public List<string> servers;
@@ -62,9 +64,18 @@ public class Main_Menu : MonoBehaviour
         Window = Instantiate(ServerAddPrefab, GameObject.Find("CenterOfScreen").transform);
     }
 
+    public void ServerOptions()
+    {
+        Window = Instantiate(LoginRegisterPrefab, GameObject.Find("CenterOfScreen").transform);
+    }
+
     public void Login()
     {
         Window = Instantiate(LoginPrefab, GameObject.Find("CenterOfScreen").transform);
+    }
+    public void Register()
+    {
+        Window = Instantiate(RegisterPrefab, GameObject.Find("CenterOfScreen").transform);
     }
 
     void init()

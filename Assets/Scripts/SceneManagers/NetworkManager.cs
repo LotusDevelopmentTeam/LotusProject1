@@ -100,7 +100,7 @@ public class NetworkManager : MonoBehaviour
                 loginManager.Response(packet);
                 break;
 
-            case Packet.SIGNUP_SUCCESSFULY_TYPE:
+            case Packet.REGISTER_SUCCESSFULY_TYPE:
                 loginManager.Response(packet);
                 break;
 

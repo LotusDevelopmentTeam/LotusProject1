@@ -9,6 +9,7 @@ public class RegisterServer : MonoBehaviour
     void Start()
     {
         mainScript = GameObject.Find("MenuManager").GetComponent<Main_Menu>();
+        
     }
 
     // Update is called once per frame
@@ -21,7 +22,7 @@ public class RegisterServer : MonoBehaviour
         GameObject.Find("LoginManager").GetComponent<LoginManager>().SignUp(username, password);       
     }
 
-    public void Cancel()
+    public void Back()
     {
         Destroy(gameObject);
     }

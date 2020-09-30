@@ -18,10 +18,11 @@ public class SendServerValues : MonoBehaviour
     // Update is called once per frame
     public void SetValues()
     {
-        string Name = transform.Find("Text (TMP)").GetComponent<TextMeshProUGUI>().text;
-        int index = mainScript.servers.IndexOf(Name);
+        string name = transform.Find("Text (TMP)").GetComponent<TextMeshProUGUI>().text;
+        CrossSceneInfo.ServerName = name;
+        int index = mainScript.servers.IndexOf(name);
         Server.Ip = mainScript.ips[index];
         Server.Port = Int32.Parse(mainScript.ports[index].Remove(mainScript.ports[index].Length-1));
-        mainScript.Login();
+        mainScript.ServerOptions();
     }
 }
