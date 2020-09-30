@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using System;
-using UnityEngine.UI;
+
 
 public class SendServerValues : MonoBehaviour
 {
@@ -25,7 +23,5 @@ public class SendServerValues : MonoBehaviour
         Server.Ip = mainScript.ips[index];
         Server.Port = Int32.Parse(mainScript.ports[index].Remove(mainScript.ports[index].Length-1));
         mainScript.Login();
-        Debug.Log(Server.Ip);
-        Debug.Log(Server.Port);
     }
 }

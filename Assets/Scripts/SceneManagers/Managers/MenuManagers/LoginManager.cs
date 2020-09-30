@@ -59,7 +59,7 @@ public class LoginManager : ManagerBase
         Send(packet);
     }
 
-    public void SignUp()
+    public void SignUp(string username, string password)
     {
         login_signup_button.enabled = false;
         Packet packet = new Packet(username, password, Packet.SIGNUP_MODE);

@@ -40,12 +40,13 @@ public class NetworkManager : MonoBehaviour
 
     void Start()
     {
-        Server.Connect(server_address, server_port);
+        
 
     }
 
     void Update()
     {
+
         packet = Server.GetPacket();
         #region Packet management
         if (packet.Type != Packet.NOT_VALID_TYPE)
