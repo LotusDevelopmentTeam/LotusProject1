@@ -30,7 +30,7 @@ public class NetworkManager : MonoBehaviour
 
     void Update()
     {
-
+        
         packet = Server.GetPacket();
 
         #region Packet management
