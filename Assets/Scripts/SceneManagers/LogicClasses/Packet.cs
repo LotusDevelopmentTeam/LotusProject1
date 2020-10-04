@@ -24,6 +24,7 @@ namespace Assets.Scripts.SceneManagers
      *      PLAYER_SHOOT FORMAT:                    Packet(id, shoot_id, speed, dir_x, dir_y)
      *      PLAYER_SHIELD FORMAT:                   Packet(id, shield_id)
      *      PLAYER_CHAT FORMAT:                     Packet(id, msg)
+     *      PLAYER_CHANGE_SCENE FORMAT:             Packet(id, scene)
      *  
      */
     public class Packet
@@ -38,12 +39,13 @@ namespace Assets.Scripts.SceneManagers
         public const string DISCONNECT_MODE = "d";
         #endregion
 
-        #region Sign-Up / Login Packets
+        #region Register / Login Packets
 
 
         public const int REGISTER_SUCCESSFULY_TYPE = -4;
-        public const int LOGIN_SIGNUP_ERROR_TYPE = -3;
-        public const int LOGIN_SIGNUP_TYPE = -1;
+        public const int LOGIN_REGISTER_ERROR_TYPE = -3;
+        public const int LOGIN_REGISTER_TYPE = -1;
+        public const int ID_PACKET = -2;
         public const int LOGIN_SUCCESSFULY_TYPE = 1;
         #endregion
 
@@ -95,7 +97,7 @@ namespace Assets.Scripts.SceneManagers
         /// </summary>
         public Packet(string username, string password, string mode = LOGIN_MODE)
         {
-            Type = LOGIN_SIGNUP_TYPE;
+            Type = LOGIN_REGISTER_TYPE;
             Msg = "TYPE=" + Type.ToString() + ",USERNAME=" + username + ",PASSWORD=" + password + ",MODE=" + mode + ";";
             Content = _get_content();
         }
@@ -105,11 +107,19 @@ namespace Assets.Scripts.SceneManagers
         /// <summary>
         /// Disconnect packet
         /// </summary>
-        public Packet(string id, string scene, Vector2 position, Inventory inventory)
+        public Packet(string id, bool disconnect)
         {
             Type = DISCONNECT_TYPE;
-            Msg = "TYPE=" + Type.ToString() + ",SCENE=" + scene + _pos_to_text(position) + _inventory_to_text(inventory) + ";";
+            Msg = "TYPE=" + Type.ToString() + ",ID=" + id + END_MSG_CHAR;
             Content = _get_content();
+        }
+
+        public Packet(string scene, int change)
+        {
+            Type = PLAYER_SWITCH_SCENE;
+            Msg = "TYPE=" + Type.ToString() + ",SCENE=" + scene + END_MSG_CHAR;
+            Content = _get_content();
+        
         }
 
 

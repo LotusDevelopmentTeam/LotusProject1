@@ -6,25 +6,24 @@ public class PlayerRenderer: MonoBehaviour
 {
     public GameObject playersParent;
 
-    public void RenderAllplayersInScene(string scene)
+    public void RenderAllPlayersInScene(string scene)
     {
         foreach (Player player in CrossSceneInfo.PlayerList.Values)
         {
 
             if (player.Scene == scene && player.Id != CrossSceneInfo.MyId)
             {
-                Vector2 playerPosition = player.Position;
-                Render(player, playerPosition);
+                Render(player);
             }
         }
     }
-    public void Render(Player player, Vector2 position)
+    public void Render(Player player)
     {
         Debug.Log("RENDERING");
+        Vector2 position = player.Position;
 
         GameObject newPlayerPrefab = (GameObject)AssetDatabase.LoadAssetAtPath("Prefabs/Player Prefabs/Player.prefan", typeof(GameObject));
         player.Prefab = newPlayerPrefab;
-
 
         //Spawn the new player inside "Players" GameObject
         GameObject newPlayerGameObject = Instantiate(newPlayerPrefab, position, Quaternion.identity, playersParent.transform);

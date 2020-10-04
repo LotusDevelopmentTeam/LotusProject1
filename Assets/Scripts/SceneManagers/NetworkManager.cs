@@ -14,9 +14,10 @@ public class NetworkManager : MonoBehaviour
     // Manager Scipts setup
     #region Managers Set-Up
     public LoginManager loginManager;
-    public PlayersConnectionsManager pcm;
-    public SceneChangeManager scm;
-    
+    public PlayersConnectionsManager playersConnectionsManager;
+    public PlayerMovementManager PlayerMovementManager;
+    public SceneChangerManager sceneChangerManager;
+
 
     #endregion
 
@@ -24,14 +25,25 @@ public class NetworkManager : MonoBehaviour
 
     void Start()
     {
-        
+        sceneChangerManager.Start();
 
     }
 
     void Update()
     {
-        
-        packet = Server.GetPacket();
+        try
+        {
+            packet = Server.GetPacket();
+        }
+        catch (Exception ex)
+        {
+            if (!CrossSceneInfo.InGame)
+            {
+                loginManager.EnableButtons();
+            }
+
+            Debug.Log(ex.Message);
+        }
 
         #region Packet management
         if (packet.Type != Packet.NOT_VALID_TYPE)
@@ -64,17 +76,17 @@ public class NetworkManager : MonoBehaviour
         switch (packet.Type)
         {
             case Packet.LOGIN_SUCCESSFULY_TYPE:
-                pcm.Response(packet);
+                playersConnectionsManager.Response(packet);
                 break;
 
             case Packet.DISCONNECT_TYPE:
-                pcm.Response(packet);
+                playersConnectionsManager.Response(packet);
                 break;
 
             case Packet.PLAYER_SWITCH_SCENE:
-                scm.Response(packet);
+                sceneChangerManager.Response(packet);
                 break;
-                
+
             case Packet.PLAYER_MOVEMENT_TYPE:
                 //TODO
                 break;
@@ -92,7 +104,7 @@ public class NetworkManager : MonoBehaviour
     {
         switch (packet.Type)
         {
-            case Packet.LOGIN_SIGNUP_ERROR_TYPE:
+            case Packet.LOGIN_REGISTER_ERROR_TYPE:
                 loginManager.Response(packet);
                 break;
 

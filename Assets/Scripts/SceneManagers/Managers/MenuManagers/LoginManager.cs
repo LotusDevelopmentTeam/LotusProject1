@@ -1,16 +1,16 @@
 ﻿using Assets.Scripts.SceneManagers;
 using System;
 using System.Globalization;
+using System.Linq.Expressions;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
 public class LoginManager : ManagerBase
 {
-    string username;
+
     Button send_button;
     Button back_button;
     public GameObject result_txt;
@@ -19,46 +19,33 @@ public class LoginManager : ManagerBase
 
     public override void Response(Packet packet)
     {
+        int type = Convert.ToInt32(packet.Content["TYPE"]);
 
-        string mode = packet.Content["MODE"];
-        bool result = !packet.Content.ContainsKey("MSG");
-
-        if (result)
+        if (type == Packet.LOGIN_SUCCESSFULY_TYPE)
         {
-            if (mode == Packet.REGISTER_MODE)
-            {
-                //result_txt.text = "Signed Up successfuly, please log in";
-            }
-            else
-            {
-                string myId = packet.Content["ID"];
-                username = packet.Content["USERNAME"];
-                string scene = packet.Content["SCENE"];
-                float pos_x = float.Parse(packet.Content["POS_X"], CultureInfo.InvariantCulture.NumberFormat);
-                float pos_y = float.Parse(packet.Content["POS_Y"], CultureInfo.InvariantCulture.NumberFormat);
+            string myId = packet.Content["ID"];
+            string username = packet.Content["USERNAME"];
+            string scene = packet.Content["SCENE"];
+            float pos_x = float.Parse(packet.Content["POS_X"], CultureInfo.InvariantCulture.NumberFormat);
+            float pos_y = float.Parse(packet.Content["POS_Y"], CultureInfo.InvariantCulture.NumberFormat);
+            int class_id = Convert.ToInt32(packet.Content["CLASS_ID"]);
 
-                CrossSceneInfo.MyId = myId;
-                Player me = new Player(myId, username, scene, pos_x, pos_y);
-                CrossSceneInfo.PlayerList.Add(myId, me);
-                SceneManager.LoadScene(scene);
-            }
+            CrossSceneInfo.MyId = myId;
+            Player me = new Player(myId, username, scene, pos_x, pos_y, class_id);
+            CrossSceneInfo.PlayerList.Add(myId, me);
+            CrossSceneInfo.OnlinePlayers++;
+            CrossSceneInfo.SceneName = scene;
+            SceneManager.LoadScene(scene);
         }
-        #region Couldn't Login/Signup. Show msg
         else
         {
             string result_msg = packet.Content["MSG"];
             result_txt = GameObject.Find("Result_txt");
             result_txt.GetComponent<TextMeshProUGUI>().text = result_msg;
         }
-        #endregion
 
-        send_button = GameObject.Find("Confirm").GetComponent<Button>();
-        send_button.interactable = true;
-        back_button = GameObject.Find("Back").GetComponent<Button>();
-        back_button.interactable = true;
-
+        EnableButtons();
     }
-
 
     public void LogIn(string username, string password)
     {
@@ -80,4 +67,12 @@ public class LoginManager : ManagerBase
         Send(packet);
 
     }
+    public void EnableButtons()
+    {
+        send_button = GameObject.Find("Confirm").GetComponent<Button>();
+        send_button.interactable = true;
+        back_button = GameObject.Find("Back").GetComponent<Button>();
+        back_button.interactable = true;
+    }
+
 }

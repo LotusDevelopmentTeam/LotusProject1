@@ -4,21 +4,10 @@ using UnityEngine;
 
 public static class CrossSceneInfo
 {
-    private static bool inGame = false;
     public static bool OnlineMode { get; set; }
-    public static Vector2 SpawnPoint { get; set; }
     public static int OnlinePlayers { get; set; }
-    public static bool InGame
-    {
-        get
-        {
-            return inGame;
-        }
-        set
-        {
-            inGame = value;
-        }
-    }
+    public static string SceneName { get; set; }
+    public static bool InGame { get; set; }
     public static string ServerName;
 
     public static string MyId { get; set; }
