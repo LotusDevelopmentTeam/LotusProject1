@@ -9,7 +9,7 @@ public class ServerOptions : MonoBehaviour
     void Start()
     {
         mainScript = GameObject.Find("MenuManager").GetComponent<Main_Menu>();
-        
+
     }
 
     // Update is called once per frame
@@ -24,6 +24,9 @@ public class ServerOptions : MonoBehaviour
     }
     public void Back()
     {
+        if (Server.isConnected()) {
+            Server.Disconnect();
+        }
         Destroy(gameObject);
     }
 }

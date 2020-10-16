@@ -1,35 +1,32 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
-using UnityEngine.Networking;
 using Assets.Scripts.SceneManagers;
-
-
+using System.Net;
 
 public static class Server
 {
+    static TcpClient client = new TcpClient();
+    static NetworkStream stream;
     public static string Ip { get; set; }
     public static int Port { get; set; }
-    private static TcpClient client { get; set; }
-    private static NetworkStream stream { get; set; }
 
 
-    public static void Connect(string ip, int port)
+    public static void Connect()
     {
-        Ip = ip;
-        Port = port;
         try
         {
+            Debug.Log("Connecting...");
             client.Connect(Ip, Port);
             stream = client.GetStream();
         }
-        catch
+        catch (Exception e)
         {
-            Debug.Log("Trying To Connect");
+            Debug.Log("Failed To Connect");
+            Debug.Log(e.Message);
+            //throw;
         }
     }
 
@@ -75,15 +72,23 @@ public static class Server
         catch
         {
             Debug.Log("Can't Send: " + packet.Msg);
+            throw;
         }
     }
 
     public static void Disconnect()
     {
         Packet packet = new Packet("");
-        //TODO SEND DISCONNECT PACKET 
+        //TODO SEND DISCONNECT PACKET
+        stream.Close();
         client.Close();
-        client.Dispose(); ;
+        client.Dispose();
+    }
+
+    public static bool isConnected()
+    {
+        if (client == null) return false;
+        return client.Connected;
     }
 
 }

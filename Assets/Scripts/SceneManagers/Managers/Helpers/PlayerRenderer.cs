@@ -19,10 +19,10 @@ public class PlayerRenderer: MonoBehaviour
     }
     public void Render(Player player)
     {
-        Debug.Log("RENDERING");
+        /*Debug.Log("RENDERING");
         Vector2 position = player.Position;
 
-        GameObject newPlayerPrefab = (GameObject)AssetDatabase.LoadAssetAtPath("Prefabs/Player Prefabs/Player.prefan", typeof(GameObject));
+        GameObject newPlayerPrefab = (GameObject)AssetDatabase.LoadAssetAtPath("Prefabs/Player Prefabs/Player.prefab", typeof(GameObject));
         player.Prefab = newPlayerPrefab;
 
         //Spawn the new player inside "Players" GameObject
@@ -31,7 +31,7 @@ public class PlayerRenderer: MonoBehaviour
         player.GameObject = newPlayerGameObject;
 
         DebugMsg(player);
-
+        */
     }
 
     public void UnRender(Player player)

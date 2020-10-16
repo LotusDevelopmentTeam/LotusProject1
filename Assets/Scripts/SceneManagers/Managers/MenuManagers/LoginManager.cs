@@ -54,7 +54,15 @@ public class LoginManager : ManagerBase
         back_button = GameObject.Find("Back_btn").GetComponent<Button>();
         back_button.interactable = false;
         Packet packet = new Packet(username, password, Packet.LOGIN_MODE);
-        Send(packet);
+        try
+        {
+            Send(packet);
+        }
+        catch (Exception)
+        {
+
+            EnableButtons();
+        }
     }
 
     public void SignUp(string username, string password)
@@ -64,14 +72,22 @@ public class LoginManager : ManagerBase
         back_button = GameObject.Find("Back_btn").GetComponent<Button>();
         back_button.interactable = false;
         Packet packet = new Packet(username, password, Packet.REGISTER_MODE);
+        try
+        {
         Send(packet);
+        }
+        catch (Exception)
+        {
+
+            EnableButtons();
+        }
 
     }
     public void EnableButtons()
     {
-        send_button = GameObject.Find("Confirm").GetComponent<Button>();
+        send_button = GameObject.Find("Confirm_btn").GetComponent<Button>();
         send_button.interactable = true;
-        back_button = GameObject.Find("Back").GetComponent<Button>();
+        back_button = GameObject.Find("Back_btn").GetComponent<Button>();
         back_button.interactable = true;
     }
 

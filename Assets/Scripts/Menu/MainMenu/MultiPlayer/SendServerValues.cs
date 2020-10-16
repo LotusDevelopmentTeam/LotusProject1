@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 using System;
-
+using System.Net;
 
 public class SendServerValues : MonoBehaviour
 {
@@ -21,8 +21,10 @@ public class SendServerValues : MonoBehaviour
         string name = transform.Find("Text (TMP)").GetComponent<TextMeshProUGUI>().text;
         CrossSceneInfo.ServerName = name;
         int index = mainScript.servers.IndexOf(name);
-        Server.Ip = mainScript.ips[index];
+        Server.Ip = mainScript.ips[index].Remove(mainScript.ips[index].Length-1);
+        Debug.Log(Server.Ip);
         Server.Port = Int32.Parse(mainScript.ports[index].Remove(mainScript.ports[index].Length-1));
+        Server.Connect();
         mainScript.ServerOptions();
     }
 }
