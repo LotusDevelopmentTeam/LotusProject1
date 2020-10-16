@@ -5,6 +5,7 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class MainLighting : MonoBehaviour
 {
+    public static MainLighting instance;
 
     [Header("Day/Night cycle settings")]
     public Light2D globalLight;
@@ -13,12 +14,15 @@ public class MainLighting : MonoBehaviour
     public float dayIntensity;
     public float nightIntensity;
 
-    public Light2D testLight;
-
     //private vars
     private float timer;
     [HideInInspector] public float globalTimer;
     private float lightIntensity;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
@@ -48,16 +52,5 @@ public class MainLighting : MonoBehaviour
             timer = dayNightTimer;
         }
         globalLight.intensity = Mathf.Lerp(globalLight.intensity, lightIntensity, speed * Time.deltaTime);
-        Debug.Log(timer + " " + globalLight.intensity);
-
-        //Below is for testing, this needs to be a separate script on every building light using information from this script to turn the lights on when its nighttime and turn them off during the day.
-        if (globalLight.intensity < 0.7f)
-        {
-            testLight.gameObject.SetActive(true);
-        }
-        else
-        {
-            testLight.gameObject.SetActive(false);
-        }
     }
 }

@@ -8,6 +8,7 @@ TagManager:
   - HostPlayer
   - PickUp
   - OtherPlayer
+  - Houselight
   layers:
   - Default
   - TransparentFX
