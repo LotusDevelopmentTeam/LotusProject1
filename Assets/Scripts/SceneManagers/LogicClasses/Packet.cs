@@ -15,7 +15,7 @@ namespace Assets.Scripts.SceneManagers
      *      REGISTER / LOGIN ERROR:                 Packet(msg, mode='s'/'l')
      *      REGISTER_SUCCESSFULY FORMAT:            Packet(id, username)
      *      LOGIN_SUCCESFULY FORMAT:                Packet(id, username, scene, pos_x, pos_y)
-     *      DISCONNECT FORMAT:                      Packet(id)
+     *      DISCONNECT FORMAT:                      Packet(id, mode='d')
      *      PLAYER_SWITCH_SCENE FORMAT:             Packet(id, scene, pos_x, pos_y)
      *      PLAYER_MOVEMENT FORMAT:                 Packet(id, pos_x, pos_y)
      *      PLAYER_ANIMATION FORMAT:                Packet(id, animation_id)
@@ -34,7 +34,7 @@ namespace Assets.Scripts.SceneManagers
         public const int NOT_VALID_TYPE = 0;
 
         #region Modes
-        public const string REGISTER_MODE = "s";
+        public const string REGISTER_MODE = "r";
         public const string LOGIN_MODE = "l";
         public const string DISCONNECT_MODE = "d";
         #endregion
@@ -101,7 +101,6 @@ namespace Assets.Scripts.SceneManagers
             Msg = "TYPE=" + Type.ToString() + ",USERNAME=" + username + ",PASSWORD=" + password + ",MODE=" + mode + ";";
             Content = _get_content();
         }
-
 
 
         /// <summary>

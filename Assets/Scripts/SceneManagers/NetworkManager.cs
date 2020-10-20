@@ -39,7 +39,7 @@ public class NetworkManager : MonoBehaviour
         {
             if (!CrossSceneInfo.InGame)
             {
-                //loginManager.EnableButtons();
+                loginManager.EnableButtons();
             }
 
             Debug.Log(ex.Message);

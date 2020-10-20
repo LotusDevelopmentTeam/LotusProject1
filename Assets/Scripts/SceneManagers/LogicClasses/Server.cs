@@ -53,6 +53,7 @@ public static class Server
             }
 
             string msg = new string(tmp_msg.ToArray());
+            Debug.Log(msg);
             Packet packet = new Packet(msg);
             return packet;
         }

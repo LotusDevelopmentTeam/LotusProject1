@@ -16,8 +16,10 @@ public class RegisterServer : MonoBehaviour
     public void SignUp()
     {
 
-        string username = GameObject.Find("UsernameInput").GetComponent<TextMeshProUGUI>().text;
-        string password = GameObject.Find("PasswordInput").GetComponent<TextMeshProUGUI>().text;
+        string username = GameObject.Find("UsernameInput").GetComponent<TextMeshProUGUI>().text.ToString();
+        username = username.Remove(username.Length - 1);
+        string password = GameObject.Find("PasswordInput").GetComponent<TextMeshProUGUI>().text.ToString();
+        password = password.Remove(password.Length - 1);
 
         GameObject.Find("LoginManager").GetComponent<LoginManager>().SignUp(username, password);       
     }
