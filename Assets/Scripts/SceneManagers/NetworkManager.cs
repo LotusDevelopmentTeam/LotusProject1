@@ -25,50 +25,55 @@ public class NetworkManager : MonoBehaviour
 
     void Start()
     {
-        sceneChangerManager.Start();
+        if (CrossSceneInfo.InGame)
+        {
+            sceneChangerManager.Start();
+        }
 
     }
 
     void Update()
     {
-        try
+        if (Server.isConnected())
         {
-            packet = Server.GetPacket();
-        }
-        catch (Exception ex)
-        {
-            if (!CrossSceneInfo.InGame)
+            try
             {
-                loginManager.EnableButtons();
+                packet = Server.GetPacket();
+            }
+            catch (Exception ex)
+            {
+                if (!CrossSceneInfo.InGame)
+                {
+                    loginManager.EnableButtons();
+                }
+
+                Debug.Log(ex.Message);
             }
 
-            Debug.Log(ex.Message);
-        }
-
-        #region Packet management
-        if (packet.Type != Packet.NOT_VALID_TYPE)
-        {
-            //Call corresponding script based on packet Type
-            if (CrossSceneInfo.InGame)
+            #region Packet management
+            if (packet.Type != Packet.NOT_VALID_TYPE)
             {
-                if (CrossSceneInfo.OnlineMode)
+                //Call corresponding script based on packet Type
+                if (CrossSceneInfo.InGame)
                 {
-                    ManageInGamePacket(packet);
+                    if (CrossSceneInfo.OnlineMode)
+                    {
+                        ManageInGamePacket(packet);
+                    }
+                    else
+                    {
+                        // Save Offline stuff
+                    }
                 }
                 else
                 {
-                    // Save Offline stuff
+                    ManageMenuPacket(packet);
                 }
+
             }
-            else
-            {
-                ManageMenuPacket(packet);
-            }
+            #endregion
 
         }
-        #endregion
-
-
     }
 
     private void ManageInGamePacket(Packet packet)

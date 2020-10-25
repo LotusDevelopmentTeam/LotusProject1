@@ -22,9 +22,7 @@ public class SendServerValues : MonoBehaviour
         CrossSceneInfo.ServerName = name;
         int index = mainScript.servers.IndexOf(name);
         Server.Ip = mainScript.ips[index].Remove(mainScript.ips[index].Length-1);
-        Debug.Log(Server.Ip);
         Server.Port = Int32.Parse(mainScript.ports[index].Remove(mainScript.ports[index].Length-1));
-        Server.Connect();
         mainScript.ServerOptions();
     }
 }

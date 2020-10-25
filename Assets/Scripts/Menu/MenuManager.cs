@@ -10,18 +10,6 @@ public class UImanager : MonoBehaviour
     public InputField password_field;
     public InputField ip_field;  
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void SinglePlayer()
     {
         CrossSceneInfo.OnlineMode = false;

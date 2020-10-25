@@ -40,6 +40,7 @@ public class LoginManager : ManagerBase
         else
         {
             string result_msg = packet.Content["MSG"];
+            Debug.Log(result_msg);
             result_txt = GameObject.Find("Result_txt");
             result_txt.GetComponent<TextMeshProUGUI>().text = result_msg;
         }

@@ -20,12 +20,13 @@ public class RegisterServer : MonoBehaviour
         username = username.Remove(username.Length - 1);
         string password = GameObject.Find("PasswordInput").GetComponent<TextMeshProUGUI>().text.ToString();
         password = password.Remove(password.Length - 1);
-
+        if (!Server.isConnected()) Server.Connect();
         GameObject.Find("LoginManager").GetComponent<LoginManager>().SignUp(username, password);       
     }
 
     public void Back()
     {
+        Server.Disconnect();
         Destroy(gameObject);
     }
 }
