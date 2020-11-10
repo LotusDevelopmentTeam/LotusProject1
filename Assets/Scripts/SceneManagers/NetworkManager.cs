@@ -22,7 +22,6 @@ public class NetworkManager : MonoBehaviour
     #endregion
 
 
-
     void Start()
     {
         if (CrossSceneInfo.InGame)
@@ -107,23 +106,11 @@ public class NetworkManager : MonoBehaviour
 
     private void ManageMenuPacket(Packet packet)
     {
-        switch (packet.Type)
+        if (packet.Type != Packet.NOT_VALID_TYPE)
         {
-            case Packet.LOGIN_REGISTER_ERROR_TYPE:
-                loginManager.Response(packet);
-                break;
-
-            case Packet.LOGIN_SUCCESSFULY_TYPE:
-                loginManager.Response(packet);
-                break;
-
-            case Packet.REGISTER_SUCCESSFULY_TYPE:
-                loginManager.Response(packet);
-                break;
-
-            default:
-                break;
+            loginManager.Response(packet);
         }
+
 
     }
 

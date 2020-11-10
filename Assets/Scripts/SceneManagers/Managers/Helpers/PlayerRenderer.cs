@@ -5,6 +5,7 @@ using Assets.Scripts.SceneManagers;
 public class PlayerRenderer: MonoBehaviour
 {
     public GameObject playersParent;
+    public GameObject playerPrefab;
 
     public void RenderAllPlayersInScene(string scene)
     {
@@ -19,19 +20,18 @@ public class PlayerRenderer: MonoBehaviour
     }
     public void Render(Player player)
     {
-        /*Debug.Log("RENDERING");
+        Debug.Log("RENDERING");
         Vector2 position = player.Position;
 
-        GameObject newPlayerPrefab = (GameObject)AssetDatabase.LoadAssetAtPath("Prefabs/Player Prefabs/Player.prefab", typeof(GameObject));
-        player.Prefab = newPlayerPrefab;
-
         //Spawn the new player inside "Players" GameObject
-        GameObject newPlayerGameObject = Instantiate(newPlayerPrefab, position, Quaternion.identity, playersParent.transform);
+        GameObject newPlayerGameObject = Instantiate(playerPrefab, position, Quaternion.identity, playersParent.transform);
+        
         newPlayerGameObject.name = player.Username;
+        //TODO Get player prefab properties like clothes, equipment with player.Prefab
+        // and change the GameObject texture to match player
+
         player.GameObject = newPlayerGameObject;
 
-        DebugMsg(player);
-        */
     }
 
     public void UnRender(Player player)
@@ -40,32 +40,6 @@ public class PlayerRenderer: MonoBehaviour
         player.GameObject = null;
         player.Prefab = null;
 
-        DebugMsg(player);
-
     }
-    void DebugMsg(Player player)
-    {
-        #region Debug Messages
-        if (player.Prefab == CrossSceneInfo.PlayerList[player.Id].Prefab)
-        {
-            Debug.Log("Prefabs are the same");
 
-        }
-        else
-        {
-            Debug.Log("Prefabs aren't the same");
-
-        }
-        if (player.GameObject == CrossSceneInfo.PlayerList[player.Id].GameObject)
-        {
-            Debug.Log("GameObjects are the same");
-
-        }
-        else
-        {
-            Debug.Log("GameObjects aren't the same");
-
-        }
-        #endregion
-    }
 }

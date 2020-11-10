@@ -13,8 +13,8 @@ public class PlayersConnectionsManager : ManagerBase
     public PlayerRenderer player_renderer;
     public override void Response(Packet packet)
     {
-        string id = packet.Content["ID"];
 
+        string id = packet.Content["ID"];
         string myId = CrossSceneInfo.MyId;
 
 
@@ -38,13 +38,14 @@ public class PlayersConnectionsManager : ManagerBase
             }
 
         }
+
         // Packet is a disconnection packet
         else
         {
             if (id == myId) // Kicked by server
             {
                 CrossSceneInfo.Reset();
-                SceneManager.LoadScene("Menu");
+                SceneManager.LoadScene("Main_Menu");
             }
             else
             {
